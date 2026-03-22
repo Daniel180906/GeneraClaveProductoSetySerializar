@@ -1,0 +1,36 @@
+package generarclaveproductosetyserializar;
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class GestorSerializacion {
+
+    private static final String FICHERO = "claves.dat";
+
+    public void guardar(ArrayList<Clave> claves) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FICHERO))) {
+            oos.writeObject(claves);
+            System.out.println("Claves guardadas correctamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<Clave> cargar() {
+        ArrayList<Clave> claves = new ArrayList<>();
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FICHERO))) {
+
+            Object obj = ois.readObject();
+
+            if (obj instanceof ArrayList) {
+                claves = (ArrayList<Clave>) obj;
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error al cargar: " + e.getMessage());
+        }
+
+        return claves;
+    }
+}
