@@ -1,0 +1,76 @@
+package generarclaveproductosetyserializar;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+public class Main {
+    public static void main(String[] args) {
+
+        GeneradorClaves generadorClaves = new GeneradorClaves();
+        ArrayList<Solicitud> listaSolicitantes;
+        Set<Clave> clavesGeneradas;
+
+        listaSolicitantes = crearSolicitudes();
+        mostrarSolicitantes(listaSolicitantes);
+
+        System.out.println("Generando claves únicas:");
+        clavesGeneradas = generadorClaves.generarClaves(listaSolicitantes);
+
+        mostrarClaves(clavesGeneradas);
+
+        // 🔹 SERIALIZACIÓN
+        GestorSerializacion gestor = new GestorSerializacion();
+
+        // Convertir Set → ArrayList
+        ArrayList<Clave> listaClaves = new ArrayList<>(clavesGeneradas);
+
+        // Guardar
+        gestor.guardar(listaClaves);
+
+        // Leer
+        ArrayList<Clave> clavesLeidas = gestor.cargar();
+
+        // Mostrar lo leído
+        System.out.println("\nClaves leídas desde fichero:");
+        for (Clave clave : clavesLeidas) {
+            System.out.println(clave);
+        }
+    }
+
+    private static void mostrarClaves(Set<Clave> clavesGeneradas) {
+        int contador = 1;
+
+        System.out.println("Claves generadas: ");
+        for (Clave clave : clavesGeneradas ) {
+            System.out.println("Número clave " + contador);
+            System.out.println(clave);
+            contador++;
+        }
+    }
+
+    private static void mostrarSolicitantes(ArrayList<Solicitud> listaSolicitantes) {
+        System.out.println("Solicitantes registrados: " + listaSolicitantes.size());
+        System.out.println("Lista de solicitantes: ");
+        for (Solicitud solicitante: listaSolicitantes) {
+            System.out.println("Solicitante: " + solicitante);
+        }
+        System.out.println();
+    }
+
+    private static ArrayList<Solicitud> crearSolicitudes() {
+        ArrayList<Solicitud> listaSolicitantes = new ArrayList<>();
+
+        listaSolicitantes.add(new Solicitud("Juan", "Pérez García"));
+        listaSolicitantes.add(new Solicitud("María", "López Martínez"));
+        listaSolicitantes.add(new Solicitud("Carlos", "Rodríguez Fernández"));
+        listaSolicitantes.add(new Solicitud("Ana", "Gómez Sánchez"));
+        listaSolicitantes.add(new Solicitud("Pedro", "Martín Díaz"));
+        listaSolicitantes.add(new Solicitud("Laura", "Ruiz Jiménez"));
+        listaSolicitantes.add(new Solicitud("Miguel", "Hernández Castro"));
+        listaSolicitantes.add(new Solicitud("Elena", "Moreno Ortiz"));
+        listaSolicitantes.add(new Solicitud("Francisco", "Álvarez Romero"));
+        listaSolicitantes.add(new Solicitud("Isabel", "Navarro Torres"));
+
+        return listaSolicitantes;
+    }
+}
